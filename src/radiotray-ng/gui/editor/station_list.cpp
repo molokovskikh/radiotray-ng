@@ -51,7 +51,7 @@ END_EVENT_TABLE()
 
 namespace
 {
-	const wxString NAME_COLUMN_TEXT(wxT("Name"));
+	const wxString NAME_COLUMN_TEXT(wxT("Название"));
 	const long NAME_COLUMN_INDEX = 0;
 	const int NAME_COLUMN_WIDTH = 160;
 
@@ -59,7 +59,7 @@ namespace
 	const long URL_COLUMN_INDEX = 1;
 	const int URL_COLUMN_WIDTH = 340;
 
-	const wxString NOTIFICATION_COLUMN_TEXT(wxT("Notify"));
+	const wxString NOTIFICATION_COLUMN_TEXT(wxT("Уведомление"));
 	const long NOTIFICATION_COLUMN_INDEX = 2;
 	const int NOTIFICATION_COLUMN_WIDTH = 60;
 
@@ -184,8 +184,8 @@ StationList::loadStations(size_t index, const std::string& station_to_select)
 {
 	if (this->editor_bookmarks.get() == nullptr)
 	{
-		wxString msg = "Bookmarks is not set, cannot load stations!";
-		wxMessageBox(msg, _("Error"));
+		wxString msg = "Закладки не установлены, невозможно загрузить станции!";
+		wxMessageBox(msg, _("Ошибка"));
 		return;
 	}
 
@@ -195,8 +195,8 @@ StationList::loadStations(size_t index, const std::string& station_to_select)
 	IBookmarks::group_data_t group = (*this->editor_bookmarks->getBookmarks().get())[this->group_index];
 	if (this->editor_bookmarks->getBookmarks()->get_group_stations(group.group, this->stations) == false)
 	{
-		wxString msg = "Failed to retrieve the stations, aborting load";
-		wxMessageBox(msg, _("Error"));
+		wxString msg = "Ошибка получения станций, загрузка прервана";
+		wxMessageBox(msg, _("Ошибка"));
 		return;
 	}
 
@@ -254,7 +254,7 @@ StationList::addStation()
 	IBookmarks::group_data_t group = (*this->editor_bookmarks->getBookmarks().get())[this->group_index];
 	if (this->editor_bookmarks->getBookmarks()->add_station(group.group, name, url, image, notifications) == false)
 	{
-		wxMessageBox(wxT("Failed to add the station."), wxT("Error"));
+		wxMessageBox(wxT("Не возможно добавть станцию."), wxT("Ошибка"));
 		return false;
 	}
 	this->editor_bookmarks->setDirty();
@@ -273,8 +273,8 @@ StationList::addStation()
 	int station_index = this->stations.size() - 1;
 	if (name.compare(this->stations[station_index].name) != 0)
 	{
-		std::string msg = "Invalid index - " + name + " != " + this->stations[station_index].name + " (" + std::to_string(station_index);
-		wxMessageBox(msg, wxT("Error"));
+		std::string msg = "Неправильный индекс - " + name + " != " + this->stations[station_index].name + " (" + std::to_string(station_index);
+		wxMessageBox(msg, wxT("Ошибка"));
 	}
 
 	int image_index = this->station_images.addImage(image, this->blank_image_index);
@@ -495,8 +495,8 @@ StationList::pasteStation()
 	int station_index = this->stations.size() - 1;
 	if (station_name.compare(this->stations[station_index].name) != 0)
 	{
-		std::string msg = "Invalid index - " + station_name + " != " + this->stations[station_index].name + " (" + std::to_string(station_index);
-		wxMessageBox(msg, wxT("Error"));
+		std::string msg = "Неправильный индекс - " + station_name + " != " + this->stations[station_index].name + " (" + std::to_string(station_index);
+		wxMessageBox(msg, wxT("Ошибка"));
 	}
 
 	int image_index = this->station_images.addImage(station_data.image, this->blank_image_index);
@@ -525,14 +525,14 @@ StationList::deleteStation()
 	if (data)
 	{
 		wxString tmpstr(this->stations[data->getStationIndex()].name.c_str(), wxConvUTF8);
-		wxString msg("Delete \"" + tmpstr + "\"\nAre you sure?");
-		int status = wxMessageBox(wxString(msg), wxT("Confirm"), wxYES_NO);
+		wxString msg("Удалить\"" + tmpstr + "\"\nВы уверены?");
+		int status = wxMessageBox(wxString(msg), wxT("Подтверждение"), wxYES_NO);
 		if (status == wxYES)
 		{
 			IBookmarks::group_data_t group = (*this->editor_bookmarks->getBookmarks().get())[this->group_index];
 			if (this->editor_bookmarks->getBookmarks()->remove_station(group.group, this->stations[data->getStationIndex()].name) == false)
 			{
-				wxMessageBox(wxT("Failed to remove the station, reload the bookmarks."), wxT("Warning"));
+				wxMessageBox(wxT("Не удалось удалить станцию, перезагрузка закладок."), wxT("Внимание"));
 				return false;
 			}
 
@@ -561,7 +561,7 @@ StationList::onBeginDrag(wxListEvent& event)
 	std::string text;
 	if (StationDragAndDrop::buildText(group.group, this->stations[data->getStationIndex()].name, item_id, text) == false)
 	{
-		wxMessageBox(wxT("Failed to build text object"), wxT("Error"));
+		wxMessageBox(wxT("Не удалось построить текстовый объект"), wxT("Ошибка"));
 		event.Veto();
 		return;
 	}
@@ -688,7 +688,7 @@ StationList::onItemRightClick(wxListEvent& event)
 
 	if (this->editor_bookmarks.get())
 	{
-		menu.Append(EditorFrame::idMenuAddStation, wxT("&Add"));
+		menu.Append(EditorFrame::idMenuAddStation, wxT("&Добавить"));
 
 		bool paste_available = this->isClipboardDataAvailable();
 
@@ -697,27 +697,27 @@ StationList::onItemRightClick(wxListEvent& event)
 		{
 			menu.SetTitle(this->GetItemText(item, NAME_COLUMN_INDEX));
 
-			menu.Append(EditorFrame::idMenuEditStation, wxT("&Edit"));
-			menu.Append(EditorFrame::idMenuCopyStation, wxT("&Copy"));
-			menu.Append(EditorFrame::idMenuCutStation, wxT("Cu&t"));
+			menu.Append(EditorFrame::idMenuEditStation, wxT("&Редактировать"));
+			menu.Append(EditorFrame::idMenuCopyStation, wxT("&Копировать"));
+			menu.Append(EditorFrame::idMenuCutStation, wxT("В&ырезать"));
 			if (paste_available)
 			{
-				menu.Append(EditorFrame::idMenuPasteStation, wxT("&Paste"));
+				menu.Append(EditorFrame::idMenuPasteStation, wxT("&Вставить"));
 			}
-			menu.Append(EditorFrame::idMenuDeleteStation, wxT("&Delete"));
+			menu.Append(EditorFrame::idMenuDeleteStation, wxT("&Удалить"));
 		}
 		else
 		{
 			if (paste_available)
 			{
-				menu.Append(EditorFrame::idMenuPasteStation, wxT("&Paste"));
+				menu.Append(EditorFrame::idMenuPasteStation, wxT("&Вставить"));
 			}
 		}
 
 		menu.AppendSeparator();
 	}
 
-	menu.Append(EditorFrame::idMenuAbout, wxT("About"));
+	menu.Append(EditorFrame::idMenuAbout, wxT("О пограмме"));
 
 	this->PopupMenu(&menu);
 }
@@ -725,6 +725,6 @@ StationList::onItemRightClick(wxListEvent& event)
 void
 StationList::setNotify(long item_id, bool checked)
 {
-	wxString text((checked ? wxT("Yes") : wxT("No")));
+	wxString text((checked ? wxT("Да") : wxT("Нет")));
 	this->SetItem(item_id, NOTIFICATION_COLUMN_INDEX, text);
 }

@@ -28,7 +28,7 @@
 #include "editor_frame.hpp"
 
 #define	PROJECT_NAME			"Radiotray-NG"
-#define	APPLICATION_NAME		"Bookmark Editor"
+#define	APPLICATION_NAME		"Редактор закладок"
 #define APPLICATION_PID_NAME	"rtng-bookmark-editor.pid"
 
 

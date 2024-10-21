@@ -45,7 +45,7 @@ void
 EditorApp::OnInitCmdLine(wxCmdLineParser& parser)
 {
 	wxApp::OnInitCmdLine(parser);
-	parser.AddParam(_("Bookmark file to load"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+	parser.AddParam(_("Файл закладок для загрузки"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 }
 
 bool
@@ -90,7 +90,7 @@ EditorApp::OnInit()
 										wxCONFIG_USE_LOCAL_FILE);
 	this->config->SetRecordDefaults();
 
-	std::string title = PROJECT_NAME " " APPLICATION_NAME;
+	std::wstring title = _T(PROJECT_NAME " " APPLICATION_NAME);
 
     this->frame = new EditorFrame(nullptr, title, this->file_to_load);
 

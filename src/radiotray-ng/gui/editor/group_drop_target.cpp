@@ -43,7 +43,7 @@ GroupDropTarget::OnDragOver(wxCoord x, wxCoord y, wxDragResult def)
 	{
 		if (drag_object->onGroupDragOver(x, y) == false)
 		{
-			wxMessageBox(wxT("drag over failed"), wxT("Error"));
+			wxMessageBox(wxT("Перенос не выполнен"), wxT("Ошибка"));
 		}
 	}
 

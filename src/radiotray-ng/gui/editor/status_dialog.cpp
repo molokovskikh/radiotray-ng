@@ -28,13 +28,13 @@
 
 StatusDialog::StatusDialog()
 {
-	this->Create(nullptr, wxID_ANY, wxT("Status Dialog"));
+	this->Create(nullptr, wxID_ANY, wxT("Статусный диалог"));
 
 	wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
 	for (int i = 0; i < MAX_TEXT_FIELDS; i++)
 	{
-		this->text_fields[i] = new wxStaticText(this, wxID_ANY, wxT("nothing"), wxDefaultPosition, wxSize(240, -1));
+		this->text_fields[i] = new wxStaticText(this, wxID_ANY, wxT("ничего"), wxDefaultPosition, wxSize(240, -1));
 		main_sizer->Add(this->text_fields[i], wxEXPAND | wxALL);
 	}
 

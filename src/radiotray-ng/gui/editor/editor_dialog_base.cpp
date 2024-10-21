@@ -20,6 +20,7 @@
 #else
 	#include <wx/filedlg.h>
 	#include <wx/filename.h>
+    #include <wx/window.h>
 
 	#include <radiotray-ng/helpers.hpp>
 #endif
@@ -78,7 +79,7 @@ EditorDialogBase::addImageButton(wxSizer* image_sizer)
 		return false;
 	}
 
-	this->image_button = new wxButton(this, IMAGE_BUTTON_ID, "Browse ...");
+	this->image_button = new wxButton(this, IMAGE_BUTTON_ID, L"Обзор ...");
 	image_sizer->Add(this->image_button, 0, wxALIGN_RIGHT);
 
 	return true;
@@ -95,6 +96,10 @@ EditorDialogBase::finishDialog(wxSizer* main_sizer)
 	wxSizer* button_sizer = CreateSeparatedButtonSizer(wxOK | wxCANCEL);
 	if (button_sizer)
 	{
+        wxWindow *bCancel = wxWindow::FindWindowById(wxID_CANCEL, this);
+        bCancel->SetLabel(wxT("Отмена"));
+        wxWindow *bOk = wxWindow::FindWindowById(wxID_OK, this);
+        bOk->SetLabel(wxT("ОК"));
 		main_sizer->Add(button_sizer, 0, wxALL|wxGROW, 5);
 	}
 
@@ -112,22 +117,27 @@ EditorDialogBase::onBrowseButton(wxCommandEvent& /* event */)
 	wxString file = wxEmptyString;
 	if (image.size())
 	{
-		wxFileName filename(radiotray_ng::word_expand(image));
+		//wxFileName filename(radiotray_ng::word_expand(image));
+        wxFileName filename(image);
 
 		path = filename.GetPath();
 		file = filename.GetFullName();
 	}
 	wxFileDialog dialog(this,
-						("Select station image"),
+						_T("Выбирите картинку для станции"),
 						path,
 						file,
-						"Image files (*.bmp;*.ico;*.xpm;*.png;*.jpg)|*.bmp;*.ico;*.xpm;*.png;*.jpg",
+						_T("Файлы картинок (*.bmp;*.ico;*.xpm;*.png;*.jpg)|*.bmp;*.ico;*.xpm;*.png;*.jpg"),
 						wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     if (dialog.ShowModal() != wxID_OK)
 	{
 		return;
 	}
 
-	this->setImage(dialog.GetPath().ToStdString());
+    
+    wxString tmpstr(dialog.GetPath());
+    std::string ipath(tmpstr.mb_str(wxConvUTF8));
+    this->setImage(&ipath);
+	//this->setImage(dialog.GetPath().ToStdString());
 }
 

@@ -49,7 +49,7 @@ StationDropTarget::OnDragOver(wxCoord x, wxCoord y, wxDragResult def)
 	{
 		if (drag_object->onStationDragOver(x, y) == false)
 		{
-			wxMessageBox(wxT("drag over failed"), wxT("Error"));
+			wxMessageBox(wxT("Перенос не удался"), wxT("Ошибка"));
 		}
 	}
 

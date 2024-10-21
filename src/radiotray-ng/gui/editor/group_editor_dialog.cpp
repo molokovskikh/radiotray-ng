@@ -38,7 +38,7 @@
 namespace
 {
 	const wxWindowID GROUP_DIALOG_ID = 401;
-	const wxString GROUP_DIALOG_TITLE = wxT("Group Editor");
+	const wxString GROUP_DIALOG_TITLE = wxT("Редактор группы");
 
 	const wxWindowID NAME_ID = 402;
 	const wxWindowID BITMAP_ID = 403;
@@ -86,17 +86,17 @@ GroupEditorDialog::createControls()
 
 	wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 5, 5);
 
-	grid_sizer->Add(new wxStaticText(this, wxID_ANY, wxT("Name")), 0, wxALIGN_LEFT);
+	grid_sizer->Add(new wxStaticText(this, wxID_ANY, wxT("Название")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
 	this->name_control = new wxTextCtrl(this, NAME_ID, "", wxDefaultPosition, wxSize(140, -1));
 	grid_sizer->Add(this->name_control, 0, wxALIGN_LEFT | wxEXPAND);
 
-	grid_sizer->Add(new wxStaticText(this, wxID_ANY, wxT("Image")), 0, wxALIGN_LEFT);
+	grid_sizer->Add(new wxStaticText(this, wxID_ANY, wxT("Картинка")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
 
 	wxFlexGridSizer* image_sizer = new wxFlexGridSizer(3, 5, 5);
 
 	wxImage image = wxImage(folder_xpm).Scale(24, 24);
 	this->bitmap_control = new wxStaticBitmap(this, BITMAP_ID, wxBitmap(image));
-	image_sizer->Add(this->bitmap_control, 0, wxALIGN_LEFT);
+	image_sizer->Add(this->bitmap_control, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
 	this->image_control = new wxTextCtrl(this, IMAGE_ID, "", wxDefaultPosition, wxSize(270, -1));
 	image_sizer->Add(this->image_control, 0, wxALIGN_LEFT | wxEXPAND);
 
@@ -116,7 +116,7 @@ GroupEditorDialog::createControls()
 void
 GroupEditorDialog::setData(const std::string& name, const std::string& image)
 {
-	wxString tmpstr(name.c_str(), wxConvUTF8);
+	wxString tmpstr(name.c_str(), wxConvUTF8);    
 	this->name_control->SetValue(tmpstr);
 	this->image_control->SetValue(wxString(image));
 
@@ -129,7 +129,7 @@ GroupEditorDialog::setData(const std::string& name, const std::string& image)
 		///       http://trac.wxwidgets.org/ticket/15331
 		wxLogNull log_null;
 
-		wxImage img = wxImage(radiotray_ng::word_expand(image)).Scale(24, 24);
+		wxImage img = wxImage(radiotray_ng::word_expand(image)).Scale(24, 24);        
 		this->bitmap_control->SetBitmap(wxBitmap(img));
 	}
 }
@@ -138,7 +138,7 @@ void
 GroupEditorDialog::getData(std::string& name, std::string& image)
 {
 	wxString tmpstr = this->name_control->GetValue();
-	name = std::string(tmpstr.mb_str(wxConvUTF8));
+    name = std::string(tmpstr.mb_str(wxConvUTF8));
 	name = radiotray_ng::trim(name);
 	image = this->image_control->GetValue().ToStdString();
 }
@@ -150,9 +150,10 @@ GroupEditorDialog::getImagePath()
 }
 
 bool
-GroupEditorDialog::setImage(const std::string& path)
+GroupEditorDialog::setImage(std::string* path)
 {
-	this->image_control->SetValue(path);
+    wxString ipath(*path);
+	this->image_control->SetValue(ipath);
 
 	/// @todo The following is a "temporary" workaround for the
 	///       issue identified in 15331. This can be removed once
@@ -161,7 +162,7 @@ GroupEditorDialog::setImage(const std::string& path)
 	///       http://trac.wxwidgets.org/ticket/15331
 	wxLogNull log_null;
 
-	wxImage img = wxImage(path).Scale(24, 24);
+	wxImage img = wxImage(ipath).Scale(24, 24);
 	this->bitmap_control->SetBitmap(wxBitmap(img));
 
 	return true;

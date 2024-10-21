@@ -39,7 +39,7 @@ public:
 	bool finishDialog(wxSizer* main_sizer);
 
 	virtual std::string getImagePath() = 0;
-	virtual bool setImage(const std::string& path) = 0;
+	virtual bool setImage(std::string* path) = 0;
 
 	void onBrowseButton(wxCommandEvent& event);
 	DECLARE_EVENT_TABLE()

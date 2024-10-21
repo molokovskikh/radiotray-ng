@@ -150,33 +150,33 @@ EditorFrame::createMenus()
 	wxMenuBar* mbar = new wxMenuBar();
 
 	wxMenu* fileMenu = new wxMenu(_T(""));
-	fileMenu->Append(idMenuNew, _("&New"), _("Create a new Bookmarks File"));
-	fileMenu->Append(idMenuOpen, _("&Open\tCtrl-O"), _("Open a Bookmarks File"));
-	fileMenu->Append(idMenuSave, _("&Save\tCtrl-S"), _("Save the Bookmarks File"));
-	fileMenu->Append(idMenuSaveAs, _("&Save As"), _("Save the Bookmarks to a new file"));
+	fileMenu->Append(idMenuNew, _T("Н&овый"), _T("Создать новый файл закладок"));
+	fileMenu->Append(idMenuOpen, _T("&Открыть\tCtrl-O"), _T("Открыть файл закладок"));
+	fileMenu->Append(idMenuSave, _T("С&охранить\tCtrl-S"), _T("Сохранить файл закладок"));
+	fileMenu->Append(idMenuSaveAs, _T("С&охранить как"), _T("Сохранить файл закладок в новый файл"));
 	fileMenu->AppendSeparator();
-	fileMenu->Append(idMenuQuit, _("&Quit\tCtrl-Q"), _("Quit the application"));
-	mbar->Append(fileMenu, _("&File"));
+	fileMenu->Append(idMenuQuit, _T("В&ыход\tCtrl-Q"), _T("Выход из программы"));
+	mbar->Append(fileMenu, _T("Ф&айл"));
 
 	wxMenu* groupMenu = new wxMenu(_T(""));
-	groupMenu->Append(idMenuAddGroup, _("&Add"));
-	groupMenu->Append(idMenuEditGroup, _("&Edit"));
-	groupMenu->Append(idMenuCopyGroup, _("&Copy"));
-	groupMenu->Append(idMenuDeleteGroup, _("&Delete"));
-	mbar->Append(groupMenu, _("&Group"));
+	groupMenu->Append(idMenuAddGroup, _T("&Д&обавить"));
+	groupMenu->Append(idMenuEditGroup, _T("Р&едактировать"));
+	groupMenu->Append(idMenuCopyGroup, _T("К&опировать"));
+	groupMenu->Append(idMenuDeleteGroup, _T("&Удалить"));
+	mbar->Append(groupMenu, _T("Гр&уппа"));
 
 	wxMenu* stationMenu = new wxMenu(_T(""));
-	stationMenu->Append(idMenuAddStation, _("&Add\tCtrl-A"));
-	stationMenu->Append(idMenuEditStation, _("&Edit\tCtrl-E"));
-	stationMenu->Append(idMenuCopyStation, _("&Copy\tCtrl-C"));
-	stationMenu->Append(idMenuCutStation, _("Cu&t\tCtrl-X"));
-	stationMenu->Append(idMenuPasteStation, _("&Paste\tCtrl-V"));
-	stationMenu->Append(idMenuDeleteStation, _("&Delete\tCtrl-D"));
-	mbar->Append(stationMenu, _("&Station"));
+	stationMenu->Append(idMenuAddStation, _T("Д&обавить\tCtrl-A"));
+	stationMenu->Append(idMenuEditStation, _T("Р&едактировать\tCtrl-E"));
+	stationMenu->Append(idMenuCopyStation, _T("К&опировать\tCtrl-C"));
+	stationMenu->Append(idMenuCutStation, _T("В&ырезать\tCtrl-X"));
+	stationMenu->Append(idMenuPasteStation, _T("Вст&авить\tCtrl-V"));
+	stationMenu->Append(idMenuDeleteStation, _T("&Удалить\tCtrl-D"));
+	mbar->Append(stationMenu, _T("Ст&анция"));
 
 	wxMenu* helpMenu = new wxMenu(_T(""));
-	helpMenu->Append(idMenuAbout, _("&About\tF1"), _("Show info about this application"));
-	mbar->Append(helpMenu, _("&Help"));
+	helpMenu->Append(idMenuAbout, _T("О пр&ограмме\tF1"), _T("Показать информацию о программе"));
+	mbar->Append(helpMenu, _T("П&омощь"));
 
 	this->SetMenuBar(mbar);
 
@@ -360,17 +360,17 @@ EditorFrame::onSaveAs(wxCommandEvent& /* event */)
 	if (this->editor_bookmarks.get() == nullptr)
 	{
 		// should never reach here
-		wxMessageBox(wxT("No open bookmarks detected!"), wxT("Error"));
+		wxMessageBox(wxT("Открытые закаладки не обнаружены!"), wxT("Ошибка"));
 		this->GetMenuBar()->Enable(idMenuSave, false);
 		this->GetMenuBar()->Enable(idMenuSaveAs, false);
 		return;
 	}
 
 	wxFileDialog dialog(this,
-						wxT("Save bookmarks file"),
+						wxT("Сохранить файл закладок"),
 						"",
 						"",
-						"Bookmark files (*.json)|*.json",
+						"Файлы закладок (*.json)|*.json",
 						wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (dialog.ShowModal() != wxID_OK)
 	{
@@ -403,7 +403,7 @@ EditorFrame::onClose(wxCloseEvent& event)
 			}
 			else
 			{
-				wxMessageBox(wxT("Unable to veto, application will exit!"), wxT("Warning"));
+				wxMessageBox(wxT("Невозможно выполнить, выход из приложения!"), wxT("Внимание"));
 			}
 		}
 	}
@@ -558,8 +558,8 @@ EditorFrame::loadBookmarks(const std::string& filename)
 	this->editor_bookmarks = std::make_shared<EditorBookmarks>(filename);
 	if (this->group_list->loadBookmarks(this->editor_bookmarks) == false)
 	{
-		wxString msg("A failure occurred loading the bookmarks.");
-		wxMessageBox(msg, _("Error"));
+		wxString msg("Ошибка при загрузке закладок.");
+		wxMessageBox(msg, _("Ошибка"));
 
 		this->editor_bookmarks.reset();
 		return;
@@ -583,7 +583,7 @@ EditorFrame::saveBookmarks(bool ask_to_save, const std::string& file_to_save)
 	if (this->editor_bookmarks.get() == nullptr)
 	{
 		// should never reach here
-		wxMessageBox(wxT("No open bookmarks detected!"), wxT("Error"));
+		wxMessageBox(wxT("Не обнаружены открытые закладки!"), wxT("Ошибка"));
 		this->GetMenuBar()->Enable(idMenuSave, false);
 		this->GetMenuBar()->Enable(idMenuSaveAs, false);
 		return wxCANCEL;
@@ -598,7 +598,7 @@ EditorFrame::saveBookmarks(bool ask_to_save, const std::string& file_to_save)
 
 	if (ask_to_save)
 	{
-		int status = wxMessageBox(wxT("Save the Bookmarks?"), wxT("Confirm"), wxYES_NO | wxCANCEL, this);
+		int status = wxMessageBox(wxT("Сохранить закладки?"), wxT("Подтверждение"), wxYES_NO | wxCANCEL, this);
 		if (status != wxYES)
 		{
 			return status;
@@ -607,7 +607,7 @@ EditorFrame::saveBookmarks(bool ask_to_save, const std::string& file_to_save)
 
 	if (!this->editor_bookmarks->getBookmarks()->save_as(file_to_save))
 	{
-		wxMessageBox("Failed to save the bookmarks!", _("Error"));
+		wxMessageBox("Не удалось сохранить закладки!", _("Ошибка"));
 		return wxCANCEL;
 	}
 

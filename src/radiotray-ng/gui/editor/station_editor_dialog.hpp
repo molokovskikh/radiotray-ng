@@ -36,7 +36,7 @@ public:
 
 	virtual bool createControls();
 	virtual std::string getImagePath();
-	virtual bool setImage(const std::string& path);
+	virtual bool setImage(std::string* path);
 
 	void setData(const std::string& name, const std::string& url, const std::string& image, const bool notifications);
 	void getData(std::string& name, std::string& url, std::string& image, bool& notifications);

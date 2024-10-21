@@ -45,7 +45,7 @@ IMPLEMENT_DYNAMIC_CLASS(GroupList, wxListCtrl)
 
 namespace
 {
-	const wxString NAME_COLUMN_TEXT(wxT("Group"));
+	const wxString NAME_COLUMN_TEXT(wxT("Группа"));
 	const long NAME_COLUMN_INDEX = 0;
 	const int NAME_COLUMN_WIDTH = 160;
 
@@ -54,7 +54,7 @@ namespace
 	const wxString CONFIG_PATH(wxT("/group"));
 	const wxString CONFIG_COLUMN_1(wxT("col1"));
 
-	const std::string ROOT_NAME("root");
+	const std::string ROOT_NAME("Корень");
 }
 
 
@@ -316,7 +316,7 @@ GroupList::addGroup()
 	size_t root_index = this->editor_bookmarks->getBookmarks()->size();
 	if (this->editor_bookmarks->getBookmarks()->add_group(name, image) == false)
 	{
-		wxMessageBox(wxT("Failed to add the new group!"), wxT("Error"));
+		wxMessageBox(wxT("Ошибка добавления новой группы!"), wxT("Ошибка"));
 		return false;
 	}
 	this->editor_bookmarks->setDirty();
@@ -341,7 +341,7 @@ GroupList::addGroup()
 	}
 	if (found == false)
 	{
-		wxMessageBox(wxT("An error occurred during the addition process."), wxT("Error"));
+		wxMessageBox(wxT("Произошла ошибка в процессе добавления."), wxT("Ошибка"));
 		return false;
 	}
 
@@ -503,15 +503,15 @@ GroupList::deleteGroup()
 	}
 
 	wxString tmpstr(group.group.c_str(), wxConvUTF8);
-	wxString msg("Delete \"" + tmpstr + "\"\nAre you sure?");
-	int status = wxMessageBox(wxString(msg), wxT("Confirm"), wxYES_NO);
+	wxString msg("Удалить \"" + tmpstr + "\"\nВы уверены?");
+	int status = wxMessageBox(wxString(msg), wxT("Подтверждение"), wxYES_NO);
 	if (status == wxYES)
 	{
 		this->station_list->clearStations();
 
 		if (this->editor_bookmarks->getBookmarks()->remove_group(group.group) == false)
 		{
-			wxMessageBox(wxT("Failed to remove the group."), wxT("Error"));
+			wxMessageBox(wxT("Не удалось удалить группу."), wxT("Ошибка"));
 		}
 		else
 		{
@@ -566,7 +566,7 @@ GroupList::onBeginDrag(wxListEvent& event)
 	std::string text;
 	if (GroupDragAndDrop::buildText(group.group, item_id, text) == false)
 	{
-		wxMessageBox(wxT("Failed to build text object"), wxT("Error"));
+		wxMessageBox(wxT("Не удалось построить текстовый объект"), wxT("Ошибка"));
 		event.Veto();
 		return;
 	}
@@ -816,22 +816,22 @@ GroupList::onItemRightClick(wxListEvent& event)
 
 	if (this->editor_bookmarks.get())
 	{
-		menu.Append(EditorFrame::idMenuAddGroup, wxT("&Add"));
+		menu.Append(EditorFrame::idMenuAddGroup, wxT("&Добавить"));
 
 		long item_id = event.GetItem().GetId();
 		if (item_id != -1)
 		{
 			menu.SetTitle(this->GetItemText(item_id, NAME_COLUMN_INDEX));
 
-			menu.Append(EditorFrame::idMenuEditGroup, wxT("&Edit"));
-			menu.Append(EditorFrame::idMenuCopyGroup, wxT("&Copy"));
-			menu.Append(EditorFrame::idMenuDeleteGroup, wxT("&Delete"));
+			menu.Append(EditorFrame::idMenuEditGroup, wxT("&Редактировать"));
+			menu.Append(EditorFrame::idMenuCopyGroup, wxT("&Копировать"));
+			menu.Append(EditorFrame::idMenuDeleteGroup, wxT("&Удалить"));
 		}
 
 		menu.AppendSeparator();
 	}
 
-	menu.Append(EditorFrame::idMenuAbout, wxT("About"));
+	menu.Append(EditorFrame::idMenuAbout, wxT("О программе"));
 
 	this->PopupMenu(&menu);
 }
